@@ -1,5 +1,7 @@
 package Aula05;
 
+import javax.swing.*;
+
 public class ContaBanco {
     // Atributos
     public int numConta;
@@ -56,6 +58,15 @@ public class ContaBanco {
     }
 
     //Métodos Personalizados
+    public void estadoAtual(){
+        System.out.println("----------------------------------");
+        System.out.println("Conta: " + getNumConta());
+        System.out.println("Tipo: " + getTipo());
+        System.out.println("Dono: " + getDono());
+        System.out.println("Saldo: " + getSaldo());
+        System.out.println("Status: " + getStatus());
+    }
+
     public void abrirConta(String t){
         setTipo(t);
         setStatus(true);
@@ -74,19 +85,45 @@ public class ContaBanco {
             System.out.println("Esta conta está em débito.");
         } else {
             this.setStatus(false);
+            System.out.println("Conta fechada com sucesso!");
         }
     }
 
     public void depositar(float v){
-        setSaldo(getSaldo() + v);
+        if (this.status) {
+            this.setSaldo(getSaldo()+v);
+            System.out.println("Valor depositado na conta de " + getDono());
+        } else{
+            System.out.println("Impossivel depositar em uma conta fechada!");
+        }
     }
 
     public void sacar(float v){
-        setSaldo(getSaldo() - v);
+        if (this.status) {
+            if (getSaldo() >= v) {
+                setSaldo(getSaldo() - v);
+                System.out.println("Valor de R$" + v + ",00 foi sacado!");
+            } else {
+                System.out.println("Ops, a conta não possui esse valor para saque!");
+            }
+        } else {
+            System.out.println("Está conta está fechada!");
+        }
     }
 
     public void pagarMensal(){
-        setSaldo(getSaldo() - 30);
+        int v = 0;
+        if (getTipo().equals("CC")) {
+            v = 15;
+        } else if (getTipo().equals("CP")) {
+            v = 20;
+        }
+        if (getStatus()) {
+            setSaldo(getSaldo() - v);
+            System.out.println("Mensalidade paga, no valor de R$" + v + ",00");
+        } else {
+            System.out.println("Está conta está fechada!");
+        }
     }
 
 }
